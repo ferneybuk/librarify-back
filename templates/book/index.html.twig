@@ -17,6 +17,7 @@
             <th>Título</th>
             <th>Autor</th>
             <th>Categoría</th>
+            <th>Detalles</th>
         </tr>
         </thead>
         <tbody>
@@ -32,6 +33,9 @@
                     {% for category in book.categories %}
                         {{ category.name }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('detail_book', {id: book.id}) }}">Ver</a>
                 </td>
             </tr>
         {% endfor %}
