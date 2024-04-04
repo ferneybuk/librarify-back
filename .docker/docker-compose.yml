@@ -1,11 +1,10 @@
-version: '3'
-
 services:
     db:
         image: mysql:8.0.20
+        container_name: database
         command: --default-authentication-plugin=mysql_native_password
         volumes:
-            - "db_librarify:/var/lib/mysql"
+            - "db_librarify2:/var/lib/mysql"
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -14,30 +13,38 @@ services:
         ports:
             - 3306:3306
         networks:
-            - symfony
+            - symfony_app
     php:
+        container_name: app
         build:
             context: ./php
             args:
                 TIMEZONE: ${TIMEZONE}
         volumes:
-            - librarifyback_app_sync:/var/www/librarify/
+            - ../:/var/www/librarify:cached
+            - symfony_app_var:/var/www/librarify/var
+            - symfony_app_vendor:/var/www/librarify/vendor
         networks:
-            - symfony
+            - symfony_app
     nginx:
+        container_name: server
         build:
             context: ./nginx
         volumes:
-            - librarifyback_app_sync:/var/www/librarify/
+            - ../:/var/www/librarify:cached
+            - symfony_app_var:/var/www/librarify/var
+            - symfony_app_vendor:/var/www/librarify/vendor
         ports:
             - 80:80
         networks:
-            - symfony
+            - symfony_app
+        env_file:
+            - .env.nginx.local
 
 volumes:
-    librarifyback_app_sync:
-        external: true
-    db_librarify:
+    symfony_app_var:
+    symfony_app_vendor:
+    db_librarify2:
 
 networks:
-    symfony:
+    symfony_app:
