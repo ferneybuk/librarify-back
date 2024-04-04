@@ -15,12 +15,15 @@ class CreateUserCommand extends Command
 {
 
     protected static $defaultName = 'app:user:create';
+    private array $validRoles;
 
     public function __construct(
         private UserRepository $userRepository,
         private UserPasswordHasherInterface $userPasswordHasher
     ) {
         parent::__construct();
+//        TODO: add into validator or service
+        $this->validRoles = explode(',', $_ENV["VALID_ROLES"]);
     }
 
     protected function configure(): void
@@ -29,12 +32,17 @@ class CreateUserCommand extends Command
             ->addArgument(
                 'email',
                 InputArgument::REQUIRED,
-                'admin\'s email'
+                'user\'s email'
             )
             ->addArgument(
                 'password',
                 InputArgument::REQUIRED,
-                'admin\'s password'
+                'user\'s password'
+            )
+            ->addArgument(
+                'role',
+                InputArgument::REQUIRED,
+                'user\'s role'
             );
     }
 
@@ -42,6 +50,7 @@ class CreateUserCommand extends Command
     {
         $email = $input->getArgument('email');
         $plainPassword = $input->getArgument('password');
+        $role = $input->getArgument('role');
 
         if (!\is_string($email)) {
             $output->writeln('<error>Por favor, especifica un email válido</error>');
@@ -53,12 +62,18 @@ class CreateUserCommand extends Command
             return Command::FAILURE;
         }
 
+        if(!in_array($role, $this->validRoles)) {
+            $output->writeln('<error>Por favor, especifica un role valido</error>');
+            return Command::FAILURE;
+        }
+
         $user = new User(
             Uuid::uuid4(),
             $email
         );
         $password = $this->userPasswordHasher->hashPassword($user, $plainPassword);
         $user->setPassword($password);
+        $user->setRoles([$role]);
         $this->userRepository->save($user);
 
         $output->writeln(sprintf('Created user with email: <comment>%s</comment>', $email));
