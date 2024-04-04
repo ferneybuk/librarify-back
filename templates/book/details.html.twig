@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block body %}
+
+    <h1>Detalles del libro</h1>
+
+    <ul>
+        <li>Título: {{ book.title }}</li>
+        <li>Autor(es):
+            {% for author in book.authors %}
+                {{ author.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </li>
+        <li>Categoría(s):
+            {% for category in book.categories %}
+                {{ category.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </li>
+        <li>Descripción: {{ book.description }}</li>
+    </ul>
+
+{% endblock %}
