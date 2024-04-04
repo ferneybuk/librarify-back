@@ -16,13 +16,19 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         login:
-            pattern:  ^/api/login
-            stateless: true
             anonymous: true
             json_login:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: false
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
         refresh:
             pattern:  ^/api/token/refresh
@@ -42,5 +48,5 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: ROLE_USER }
-        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/api, roles: ROLE_MEMBER }
+        - { path: /admin, roles: ROLE_ADMIN }
