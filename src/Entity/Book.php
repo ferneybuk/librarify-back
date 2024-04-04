@@ -254,9 +254,21 @@ class Book
         return $this->score;
     }
 
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public  function setCreatedAt(DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
     }
 
     public function getCreatedAt(): ?DateTimeInterface
@@ -270,6 +282,12 @@ class Book
     }
 
     public function markAsRead(DateTimeInterface $readAt): self
+    {
+        $this->readAt = $readAt;
+        return $this;
+    }
+
+    public function setReadAt(DateTimeInterface $readAt): self
     {
         $this->readAt = $readAt;
         return $this;
