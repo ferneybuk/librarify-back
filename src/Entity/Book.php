@@ -17,6 +17,7 @@ class Book
 {
     private array $domainEvents = [];
     private DateTimeInterface $createdAt;
+    private ?Collection $comments;
 
     /**
      * @param Collection|Author[]|null $authors
@@ -34,6 +35,7 @@ class Book
         private ?Collection $categories = new ArrayCollection(),
     ) {
         $this->createdAt = new DateTimeImmutable();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -169,6 +171,55 @@ class Book
         }
 
         return $this;
+    }
+
+    /**
+     * @return Category[]
+     */
+    public function getComments(): array
+    {
+        return array_values($this->comments->toArray());
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+        }
+
+        return $this;
+    }
+
+    public function updateComments(Comment ...$newComments)
+    {
+        /** @var ArrayCollection<Comment> */
+        $originalComments = new ArrayCollection();
+        foreach ($this->comments as $comment) {
+            $originalComments->add($comment);
+        }
+
+        // Remove comments
+        foreach ($originalComments as $originalComment) {
+            if (!\in_array($originalComment, $newComments, true)) {
+                $this->removeCategory($originalComment);
+            }
+        }
+
+        // Add comments
+        foreach ($newComments as $newComment) {
+            if (!$originalComments->contains($newComment)) {
+                $this->addCategory($newComment);
+            }
+        }
     }
 
     public function removeAuthor(Author $author): self

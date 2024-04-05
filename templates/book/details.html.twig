@@ -3,7 +3,7 @@
 {% block title %}{{ book.title }}{% endblock %}
 
 {% block body %}
-
+{# TODO: Add translation #}
     <h1>Detalles del libro</h1>
 
     <ul>
@@ -20,5 +20,21 @@
         </li>
         <li>Descripción: {{ book.description }}</li>
     </ul>
+
+    <h2>Comentarios</h2>
+
+{#    TODO: make pagination from back, not front #}
+{#    {% for fruit in fruits|sort((a, b) => a.quantity <=> b.quantity)|column('name') %}#}
+    {% for comment in book.comments|sort((a,b) => a.createdAt <= b.createdAt) %}
+        <div class="comment">
+            <p><strong>{{ comment.user.email }}</strong> - {{ comment.createdAt|date('d/m/Y H:i') }}</p>
+            <p>{{ comment.content }}</p>
+{#            {% if app.user == comment.user %}#}
+{#                <a href="{{ path('edit_comment', {'id': comment.id}) }}">Editar</a>#}
+{#            {% endif %}#}
+        </div>
+    {% endfor %}
+
+    {% include 'book/details/form_comment.html.twig' with {id: book.id} %}
 
 {% endblock %}

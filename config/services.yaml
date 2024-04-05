@@ -73,3 +73,12 @@ services:
     App\Service\Book\ExportInCsv:
         arguments:
             $projectFolder: '%kernel.project_dir%'
+
+    admin.comment:
+        class: App\Admin\CommentAdmin
+        arguments: [~, App\Entity\Comment, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Comment }
+        public: true
+        calls:
+            - [setUserRepository, ['@App\Repository\UserRepository']]

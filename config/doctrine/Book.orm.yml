@@ -81,4 +81,8 @@ App\Entity\Book:
             fetch: LAZY
             joinColumn:
                 nullable: false
+    oneToMany:
+        comments:
+            targetEntity: App\Entity\Comment
+            mappedBy: book
     lifecycleCallbacks: {  }
