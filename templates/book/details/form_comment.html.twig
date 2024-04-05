@@ -1,5 +1,5 @@
 {% block content %}
-    <form action="{{ path('add_comment', { 'id': id}) }}" method="post">
+    <form action="{{ path('add_comment', { 'id': id }) }}" method="post">
         <h1 class="h3 mb-3 font-weight-normal">New comment</h1>
         <label for="content">Content</label>
         <input type="text" name="_content" id="content" class="form-control" autocomplete="current-content" required>

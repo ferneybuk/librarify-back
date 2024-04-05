@@ -1,0 +1,10 @@
+{% block content %}
+    <form action="{{ path('update_comment', { 'id': id }) }}" method="post">
+        <input type="hidden" name="_method" value="put" />
+        <input value="{{ commentId }}" type="hidden" name="_comment_id" id="id" required>
+        <input value="{{ content }}" type="text" name="_comment_content" id="content" class="form-control" autocomplete="current-content" required>
+        <button class="btn btn-lg btn-primary" type="submit">
+            Modify comment
+        </button>
+    </form>
+{% endblock %}
