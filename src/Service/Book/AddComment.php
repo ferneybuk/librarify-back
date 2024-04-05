@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 class AddComment
 {
     public function __construct(
-        private readonly GetBook $getBook,
         private readonly BookRepository $bookRepository,
         private readonly CommentRepository $commentRepository,
         private Security $security
@@ -20,7 +19,7 @@ class AddComment
 
     public function __invoke(string $id, Request $request): void
     {
-        $book = ($this->getBook)($id);
+        $book = $this->bookRepository->find($id);
         $comment = Comment::create(
             $request->request->get('_content'),
             $this->security->getCurrentUser(),
