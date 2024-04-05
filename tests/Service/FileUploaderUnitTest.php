@@ -29,6 +29,6 @@ class FileUploaderUnitTest extends TestCase
         $fileUploader = new FileUploader($filesystem);
         $filename = $fileUploader->uploadBase64File($base64Image);
         $this->assertNotEmpty($filename);
-        $this->assertContains('.jpeg', $filename);
+        $this->assertStringContainsString('.jpeg', $filename);
     }
 }
