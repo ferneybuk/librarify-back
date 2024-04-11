@@ -49,3 +49,26 @@ Este curso sobre **Symfony 5** consta de los siguientes capítulos hasta la fech
 4. Instala las migraciones de base de datos: `bin/console doctrine:migrations:migrate`.
 5. Levanta el servidor local de desarrollo: `symfony server:start`.
 6. Happy codding!
+
+## Levantar el proyecto con Docker
+1. Crear un .env.local con el siguiente contenido 
+`
+    DATABASE_URL=mysql://librarify_usr:hola1234@db:3306/librarify?serverVersion=8.0.33
+    SYMFONY_DEPRECATIONS_HELPER=weak
+`
+2. ejecutar `docker compose up -d` dentro de .docker/
+3. ingresar al contenedor con el comando `docker exec -it app bash`
+4. Dentro del contenedor ejecutar `composer install`
+5. Luego ejecutar `php bin/console doctrine:migrations:migrate`
+6. Dirigirse a [http://localhost](http://localhost)
+
+## TODO
+1. CSS/Boostrap
+2. Pagination
+3. Filtros
+4. Translation
+5. WebSockets o SSE for comments
+6. Order from Back, Dont order from Front
+7. Uso de Ajax para la creacion/edicion de los comments
+8. Se deberia crear rutas de api para comments y llamar a estas por ajax ya que
+en un futuro se podria cambiar de view
